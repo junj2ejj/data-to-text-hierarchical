@@ -34,8 +34,11 @@ def _tally_parameters(model):
 
 
 def configure_process(opt, device_id):
+    
     if device_id >= 0:
         torch.cuda.set_device(device_id)
+    else:
+        return
     set_random_seed(opt.seed, device_id >= 0)
 
 
@@ -43,6 +46,7 @@ def main(opt, device_id, batch_queue=None, semaphore=None):
     # NOTE: It's important that ``opt`` has been validated and updated
     # at this point.
     configure_process(opt, device_id)
+
     init_logger(opt.log_file)
     assert len(opt.accum_count) == len(opt.accum_steps), \
         'Number of accum_count values must match number of accum_steps'
